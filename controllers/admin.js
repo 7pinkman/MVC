@@ -13,9 +13,9 @@ exports.getAddProduct = (req, res, next) => {
     */
   });
 };
-
+/*
 exports.postAddProduct = (req, res, next) => {
-  console.log('ab');
+  
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
@@ -25,6 +25,24 @@ exports.postAddProduct = (req, res, next) => {
   product.save();
   res.redirect('/');
 };
+*/
+
+
+exports.postAddProduct = (req, res, next) => {
+  
+  const title = req.body.title;
+  const imageUrl = req.body.imageUrl;
+  const price = req.body.price;
+  const description = req.body.description;
+  const product = new Product(null,title, imageUrl, description, price);
+  product
+    .save()
+    .then(() => {
+      res.redirect('/');
+    })
+    .catch(err => console.log(err));
+};
+
 
 
 exports.getEditProduct = (req, res, next) => {

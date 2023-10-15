@@ -1,14 +1,18 @@
-const fs = require('fs');
-const path = require('path');
+//const fs = require('fs');
+//const path = require('path');
 
 const Cart = require('./cart');
-
+const db = require('../util/database');
+/*
 const p = path.join(
   path.dirname(process.mainModule.filename),
   'data',
   'products.json'
 );
 
+*/
+
+/*
 const getProductsFromFile = cb => {
   fs.readFile(p, (err, fileContent) => {
     if (err) {
@@ -19,6 +23,7 @@ const getProductsFromFile = cb => {
   });
 };
 
+*/
 module.exports = class Product {
   constructor(id,title, imageUrl, description, price) {
     this.id=id;
@@ -29,6 +34,7 @@ module.exports = class Product {
 
   }
 
+  /*
   save() {
     
     
@@ -51,7 +57,16 @@ module.exports = class Product {
       }
       
     });
+  }*/
+
+  save() {
+    return db.execute(
+      'INSERT INTO products (title, price, imageUrl, description) VALUES(?, ?, ?, ?)',
+      [this.title, this.price, this.imageUrl, this.description]
+    );
   }
+
+  /*
   static deleteById(id) {
     getProductsFromFile(products => {
       const product = products.find(prod => prod.id === id);
@@ -79,4 +94,13 @@ module.exports = class Product {
       cb(product);
     })
   }
+  */
+  static fetchAll() {
+    return db.execute('SELECT  * FROM products');
+  }
+
+  static findById(id){
+    return db.execute('SELECT * FROM products WHERE products.id = ?', [id]);
+  }
+
 };
