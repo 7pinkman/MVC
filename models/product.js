@@ -1,3 +1,5 @@
+
+/*
 //const fs = require('fs');
 //const path = require('path');
 
@@ -24,6 +26,7 @@ const getProductsFromFile = cb => {
 };
 
 */
+/*
 module.exports = class Product {
   constructor(id,title, imageUrl, description, price) {
     this.id=id;
@@ -58,7 +61,7 @@ module.exports = class Product {
       
     });
   }*/
-
+/*
   save() {
     return db.execute(
       'INSERT INTO products (title, price, imageUrl, description) VALUES(?, ?, ?, ?)',
@@ -95,6 +98,7 @@ module.exports = class Product {
     })
   }
   */
+ /*
   static fetchAll() {
     return db.execute('SELECT  * FROM products');
   }
@@ -104,3 +108,32 @@ module.exports = class Product {
   }
 
 };
+*/
+
+const Sequelize = require('sequelize');
+
+const sequelize = require('../util/database');
+
+const Product = sequelize.define('product', {
+  id : {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true
+  },
+  title: Sequelize.STRING,
+  price: {
+    type: Sequelize.DOUBLE,
+    allowNull: false
+  },
+  imageUrl: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  description: {
+    type: Sequelize.STRING,
+    allowNull: false
+  }
+});
+
+module.exports = Product;

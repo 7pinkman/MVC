@@ -13,7 +13,7 @@ exports.getProducts = (req, res, next) => {
 };
 
 */
-
+/*
 exports.getProducts = (req, res, next) => {
   Product.fetchAll().then(([rows, fieldData]) => {
     res.render('shop/product-list', {
@@ -25,6 +25,24 @@ exports.getProducts = (req, res, next) => {
   .catch(err => console.log(err));
   
 } 
+*/
+
+exports.getProducts = (req, res, next) => {
+  Product.findAll()
+  .then(products => {
+    res.render('shop/product-list', {
+      prods: products,
+      pageTitle: 'All Products',
+      path: '/products'
+    });
+  })
+  .catch(err => {
+    console.log(err);
+  });
+  
+} 
+
+
 /*
 exports.getProduct = (req, res, next ) => {
   const prodId = req.params.productId;
@@ -39,7 +57,7 @@ exports.getProduct = (req, res, next ) => {
   
 }
 */
-
+/*
 exports.getProduct = (req, res, next ) => {
   const prodId = req.params.productId;
   console.log(prodId);
@@ -55,6 +73,35 @@ exports.getProduct = (req, res, next ) => {
   
 }
 
+
+*/
+
+exports.getProduct = (req, res, next ) => {
+  const prodId = req.params.productId;
+  console.log(prodId);
+  Product.findAll({where : { id: prodId}})
+  .then(products => {
+    res.render('shop/product-detail', {
+      product: products[0],
+      pageTitle: products[0].title,
+      path: '/products'
+    });
+  })
+  .catch(err => console.log(err));  
+  //two way we can fetch data
+  /*
+  Product.findByPk(prodId)
+    .then(product => {
+      res.render('shop/product-detail', {
+        product: product,
+        pageTitle: product.title,
+        path: '/products'
+      });
+    })
+    .catch(err => console.log(err));  
+    */
+  
+}
 /*
 exports.getIndex = (req, res, next) => {
   Product.fetchAll(products => {
@@ -67,6 +114,7 @@ exports.getIndex = (req, res, next) => {
 };
 */
 
+/*
 exports.getIndex = (req, res, next) => {
   Product.fetchAll()
   .then(([rows, fieldData]) => {
@@ -77,6 +125,22 @@ exports.getIndex = (req, res, next) => {
     });
   })
   .catch(err => console.log(err));
+  
+};
+*/
+
+exports.getIndex = (req, res, next) => {
+  Product.findAll()
+  .then(products => {
+    res.render('shop/index', {
+      prods: products,
+      pageTitle: 'Shop',
+      path: '/'
+    });
+  })
+  .catch(err => {
+    console.log(err);
+  });
   
 };
 
