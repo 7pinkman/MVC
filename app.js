@@ -11,7 +11,8 @@ const sequelize = require('./util/database');
 
 const Product = require('./models/product');
 const User = require('./models/user');
-
+const Cart =require('./models/cart');
+const CartItem = require('./models/cart-item');
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -51,6 +52,17 @@ Product.belongsTo(User, {constraints: true, onDelete:'CASCADE' });
 
 User.hasMany(Product);//this statement is optional as belongsto is already there before
 
+User.hasOne(Cart);
+Cart.belongsTo(User);//either of two  assoiciation is okay,either one of them will add a field to the cart which is the id 
+//of the user
+
+Cart.belongsToMany(Product, { through : CartItem });
+Product.belongsToMany(Cart, { through : CartItem });
+//above only works with a intermediate table that connects them,which basically store the combination of product id and cart id
+//i.e,CartItem
+
+
+
 sequelize
 //.sync({force: true})//we use force to overwrite the table
 .sync()
@@ -69,7 +81,11 @@ sequelize
 })
 .then(user => {
    //console.log(user);
-   app.listen(3000);
+   return user.createCart();
+   //app.listen(3000);
+})
+.then(cart => {
+    app.listen(3000);
 })
 .catch(err => {
     console.log(err);
